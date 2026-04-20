@@ -1,32 +1,32 @@
-# 💸 Smart Expense Tracker
+#  Smart Expense Tracker
 
 A **production-level Expense Management Web App** built using **Streamlit + Python** that helps users track, analyze, and optimize their spending with smart insights and visual analytics.
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 🔐 User Management
+###  User Management
 
 * Secure login/signup system
 * Password hashing using `bcrypt`
 * Multi-user support
 
-### 💰 Expense Tracking
+###  Expense Tracking
 
 * Add, edit, delete expenses
 * Categories (Food, Transport, Shopping, etc.)
 * Payment modes (Cash, UPI, Cards, Net Banking)
 * Recurring expense tracking
 
-### 📊 Data Visualization
+###  Data Visualization
 
 * Interactive charts using `plotly`
 * Category-wise spending (Pie chart)
 * Monthly trends (Line graph)
 * Payment mode distribution
 
-### 📡 Smart Analytics
+###  Smart Analytics
 
 * End-of-month spending prediction
 * Financial health score (0–100)
@@ -34,13 +34,13 @@ A **production-level Expense Management Web App** built using **Streamlit + Pyth
 * Spending streak tracking
 * AI-based suggestions to reduce expenses
 
-### 🎯 Budget & Goals
+###  Budget & Goals
 
 * Monthly budget tracking
 * Category-wise budget limits
 * Savings goal monitoring
 
-### 📂 Data Management
+###  Data Management
 
 * Import expenses via CSV
 * Backup & restore functionality
@@ -52,7 +52,7 @@ A **production-level Expense Management Web App** built using **Streamlit + Pyth
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * **Frontend & Backend:** Streamlit
 * **Data Processing:** pandas, numpy
@@ -63,7 +63,7 @@ A **production-level Expense Management Web App** built using **Streamlit + Pyth
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ### 1. Clone or Download the Project
 
@@ -80,7 +80,7 @@ pip install streamlit pandas plotly numpy bcrypt fpdf openpyxl
 
 ---
 
-## ▶️ Running the Application
+##  Running the Application
 
 ```bash
 streamlit run expense_tracker.py
@@ -94,14 +94,14 @@ http://localhost:8501
 
 ---
 
-## 🔑 Default Login Credentials
+##  Default Login Credentials
 
 * **Username:** admin
 * **Password:** 1234
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 expense-tracker/
@@ -115,7 +115,7 @@ expense-tracker/
 
 ---
 
-## 📸 Screens & Modules
+##  Screens & Modules
 
 * Login / Signup Page
 * Dashboard with KPIs
@@ -126,7 +126,7 @@ expense-tracker/
 
 ---
 
-## 🧠 Key Concepts Used
+##  Key Concepts Used
 
 * Data Analysis using Pandas
 * Data Visualization with Plotly
@@ -137,7 +137,7 @@ expense-tracker/
 
 ---
 
-## ⚠️ Known Issues
+##  Known Issues
 
 * File name with spaces or brackets may cause execution issues
 * Requires Python 3.8+
@@ -145,7 +145,7 @@ expense-tracker/
 
 ---
 
-## 📈 Future Improvements
+##  Future Improvements
 
 * Cloud deployment (AWS / Streamlit Cloud)
 * Mobile responsiveness
@@ -155,12 +155,12 @@ expense-tracker/
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Your Name**
 
 ---
 
-## 📜 License
+##  License
 
 This project is for educational purposes.
