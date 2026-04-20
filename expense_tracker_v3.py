@@ -1,10 +1,3 @@
-"""
-╔══════════════════════════════════════════════════════╗
-║       SMART EXPENSE TRACKER - Production Level       ║
-║       Built with Streamlit + Python                  ║
-╚══════════════════════════════════════════════════════╝
-"""
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -18,9 +11,6 @@ import shutil
 from datetime import date, datetime, timedelta
 from fpdf import FPDF
 
-# ─────────────────────────────────────────────────────
-#  PAGE CONFIG (must be first Streamlit call)
-# ─────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Smart Expense Tracker",
     page_icon="💸",
@@ -28,9 +18,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─────────────────────────────────────────────────────
-#  PATHS & CONSTANTS
-# ─────────────────────────────────────────────────────
 BASE_DIR    = "data"
 USERS_FILE  = os.path.join(BASE_DIR, "users.json")
 BACKUP_DIR  = os.path.join(BASE_DIR, "backups")
@@ -41,11 +28,7 @@ PAY_MODES   = ['Cash', 'UPI', 'Credit Card', 'Debit Card', 'Net Banking']
 os.makedirs(BASE_DIR,   exist_ok=True)
 os.makedirs(BACKUP_DIR, exist_ok=True)
 
-# ─────────────────────────────────────────────────────
-#  THEME CSS
-# ─────────────────────────────────────────────────────
 def apply_theme():
-    # Single clean dark theme
     bg        = "#0a0e1a"
     card_bg   = "#1a1f35"
     border    = "#2a2f4a"
@@ -164,9 +147,6 @@ def apply_theme():
     </style>
     """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────
-#  USER MANAGEMENT (with bcrypt hashing)
-# ─────────────────────────────────────────────────────
 def load_users() -> dict:
     """Load users from JSON file."""
     try:
@@ -207,9 +187,6 @@ def ensure_default_user():
         }
         save_users(users)
 
-# ─────────────────────────────────────────────────────
-#  EXPENSE DATA MANAGEMENT
-# ─────────────────────────────────────────────────────
 def get_csv_path(username: str) -> str:
     return os.path.join(BASE_DIR, f"expenses_{username}.csv")
 
@@ -269,9 +246,6 @@ def add_recurring_expenses(username: str):
                 [st.session_state.expenses, new_row], ignore_index=True)
     save_expenses(username, st.session_state.expenses)
 
-# ─────────────────────────────────────────────────────
-#  AI / SMART ANALYTICS
-# ─────────────────────────────────────────────────────
 def spending_prediction(df: pd.DataFrame, budget: float) -> dict:
     """Predict end-of-month spending using linear trend."""
     result = {"predicted": 0, "warning": False, "days_left": 0, "daily_avg": 0}
@@ -337,11 +311,11 @@ def financial_health_score(df: pd.DataFrame, budget: float, savings_goal: float)
             elif ratio < 0.5:
                 score += 5
                 reasons.append("Excellent budget control")
-        # Diversity penalty (spending in only 1 category)
+                
         num_cats = df['Category'].nunique()
         if num_cats < 2:
             score -= 5
-        # Savings check (simple: budget - spending vs goal)
+        
         saved = max(budget - total, 0)
         if savings_goal > 0 and saved >= savings_goal:
             score += 10
@@ -396,9 +370,6 @@ def daily_notifications(df: pd.DataFrame) -> list:
         pass
     return msgs
 
-# ─────────────────────────────────────────────────────
-#  PDF EXPORT
-# ─────────────────────────────────────────────────────
 def generate_pdf(df: pd.DataFrame, username: str, budget: float, health: dict) -> bytes:
     """Generate a summary PDF report."""
     try:
@@ -412,7 +383,6 @@ def generate_pdf(df: pd.DataFrame, username: str, budget: float, health: dict) -
         pdf.cell(0, 8, f"User: {username}   |   Generated: {date.today()}", ln=True, align="C")
         pdf.ln(6)
 
-        # Summary
         pdf.set_font("Helvetica", "B", 13)
         pdf.set_text_color(30, 30, 50)
         pdf.cell(0, 10, "Summary", ln=True)
@@ -425,7 +395,6 @@ def generate_pdf(df: pd.DataFrame, username: str, budget: float, health: dict) -
         pdf.ln(4)
 
         if not df.empty:
-            # Category breakdown
             pdf.set_font("Helvetica", "B", 13)
             pdf.cell(0, 10, "Category Breakdown", ln=True)
             pdf.set_font("Helvetica", "", 10)
@@ -434,7 +403,6 @@ def generate_pdf(df: pd.DataFrame, username: str, budget: float, health: dict) -
                 pdf.cell(0, 7, f"  {cat}: Rs {amt:,.2f}", ln=True)
             pdf.ln(4)
 
-            # Recent transactions (up to 15)
             pdf.set_font("Helvetica", "B", 13)
             pdf.cell(0, 10, "Recent Transactions", ln=True)
             pdf.set_font("Helvetica", "B", 9)
@@ -455,9 +423,6 @@ def generate_pdf(df: pd.DataFrame, username: str, budget: float, health: dict) -
         st.error(f"PDF error: {e}")
         return b""
 
-# ─────────────────────────────────────────────────────
-#  CHARTS
-# ─────────────────────────────────────────────────────
 def chart_colors():
     return ['#7c6af7','#06b6d4','#22c55e','#f59e0b','#ef4444','#a855f7','#ec4899','#14b8a6']
 
@@ -482,7 +447,6 @@ def render_charts(df: pd.DataFrame):
 
     st.markdown("<div class='section-title'>📊 Visual Analysis</div>", unsafe_allow_html=True)
 
-    # Row 1: Pie + Bar
     c1, c2 = st.columns(2)
     with c1:
         cat_data = df.groupby('Category')['Amount'].sum().reset_index()
@@ -496,7 +460,6 @@ def render_charts(df: pd.DataFrame):
         fig = transparent_layout(fig, "Category Bar Chart")
         st.plotly_chart(fig, use_container_width=True)
 
-    # Row 2: Monthly Trend Line
     df['Month'] = df['Date'].dt.to_period('M').astype(str)
     monthly = df.groupby('Month')['Amount'].sum().reset_index()
     if len(monthly) >= 1:
@@ -507,7 +470,6 @@ def render_charts(df: pd.DataFrame):
         fig = transparent_layout(fig, "📈 Monthly Spending Trend")
         st.plotly_chart(fig, use_container_width=True)
 
-    # Payment Mode chart
     if 'Payment Mode' in df.columns:
         pay_data = df.groupby('Payment Mode')['Amount'].sum().reset_index()
         if not pay_data.empty:
@@ -516,9 +478,6 @@ def render_charts(df: pd.DataFrame):
             fig = transparent_layout(fig, "💳 Spending by Payment Mode")
             st.plotly_chart(fig, use_container_width=True)
 
-# ─────────────────────────────────────────────────────
-#  LOGIN / SIGNUP PAGE
-# ─────────────────────────────────────────────────────
 def render_login():
     apply_theme()
     _, col, _ = st.columns([1, 1.1, 1])
@@ -568,9 +527,6 @@ def render_login():
                         save_users(users)
                         st.success("✅ Account created! Please login.")
 
-# ─────────────────────────────────────────────────────
-#  SIDEBAR
-# ─────────────────────────────────────────────────────
 def render_sidebar():
     username  = st.session_state.current_user
     user_data = st.session_state.user_data
@@ -766,9 +722,6 @@ def render_sidebar():
 
     return float(budget), float(savings_goal), new_cat_budgets
 
-# ─────────────────────────────────────────────────────
-#  MAIN DASHBOARD
-# ─────────────────────────────────────────────────────
 def render_dashboard(budget, savings_goal, cat_budgets):
     username = st.session_state.current_user
     df_full  = st.session_state.expenses.copy()
@@ -1046,9 +999,6 @@ def render_dashboard(budget, savings_goal, cat_budgets):
     st.markdown("---")
     st.caption("💸 Smart Expense Tracker v2.0 | Built with Python & Streamlit | Powered by Predictive Analytics")
 
-# ─────────────────────────────────────────────────────
-#  MAIN ENTRY POINT
-# ─────────────────────────────────────────────────────
 def main():
     ensure_default_user()
 
